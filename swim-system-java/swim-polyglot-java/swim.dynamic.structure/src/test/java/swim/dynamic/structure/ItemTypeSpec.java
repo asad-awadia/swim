@@ -18,12 +18,15 @@ import org.graalvm.polyglot.Context;
 import org.testng.annotations.Test;
 import swim.dynamic.JavaHostRuntime;
 import swim.structure.Item;
+import swim.structure.Num;
+import swim.structure.Record;
+import swim.structure.Slot;
 import swim.vm.VmBridge;
 import static org.testng.Assert.assertEquals;
 
 public class ItemTypeSpec {
   @Test
-  public void testItems() {
+  public void testAbsent() {
     try (Context context = Context.create()) {
       final JavaHostRuntime runtime = new JavaHostRuntime();
       final VmBridge bridge = new VmBridge(runtime, "js");
@@ -31,20 +34,77 @@ public class ItemTypeSpec {
 
       final org.graalvm.polyglot.Value bindings = context.getBindings("js");
       bindings.putMember("absent", bridge.hostToGuest(Item.absent()));
-      bindings.putMember("extant", bridge.hostToGuest(Item.extant()));
-      bindings.putMember("empty", bridge.hostToGuest(Item.empty()));
 
       assertEquals(bridge.guestToHost(context.eval("js", "absent")), Item.absent());
       assertEquals(context.eval("js", "absent.isDefined()").asBoolean(), false);
       assertEquals(context.eval("js", "absent.isDistinct()").asBoolean(), false);
+    }
+  }
+
+  @Test
+  public void testExtant() {
+    try (Context context = Context.create()) {
+      final JavaHostRuntime runtime = new JavaHostRuntime();
+      final VmBridge bridge = new VmBridge(runtime, "js");
+      runtime.addHostLibrary(SwimStructure.LIBRARY);
+
+      final org.graalvm.polyglot.Value bindings = context.getBindings("js");
+      bindings.putMember("extant", bridge.hostToGuest(Item.extant()));
 
       assertEquals(bridge.guestToHost(context.eval("js", "extant")), Item.extant());
       assertEquals(context.eval("js", "extant.isDefined()").asBoolean(), true);
       assertEquals(context.eval("js", "extant.isDistinct()").asBoolean(), false);
+    }
+  }
+
+  @Test
+  public void testEmptyRecord() {
+    try (Context context = Context.create()) {
+      final JavaHostRuntime runtime = new JavaHostRuntime();
+      final VmBridge bridge = new VmBridge(runtime, "js");
+      runtime.addHostLibrary(SwimStructure.LIBRARY);
+
+      final org.graalvm.polyglot.Value bindings = context.getBindings("js");
+      bindings.putMember("empty", bridge.hostToGuest(Item.empty()));
 
       assertEquals(bridge.guestToHost(context.eval("js", "empty")), Item.empty());
       assertEquals(context.eval("js", "empty.isDefined()").asBoolean(), true);
       assertEquals(context.eval("js", "empty.isDistinct()").asBoolean(), true);
+    }
+  }
+
+  @Test
+  public void testUpdateRecord() {
+    try (Context context = Context.create()) {
+      final JavaHostRuntime runtime = new JavaHostRuntime();
+      final VmBridge bridge = new VmBridge(runtime, "js");
+      runtime.addHostLibrary(SwimStructure.LIBRARY);
+
+      final org.graalvm.polyglot.Value bindings = context.getBindings("js");
+      bindings.putMember("record", bridge.hostToGuest(Record.create()));
+      bindings.putMember("eight", bridge.hostToGuest(Num.from(8)));
+
+      assertEquals(bridge.guestToHost(context.eval("js", "record.updated('foo', 'bar')")), Record.of(Slot.of("foo", "bar")));
+      assertEquals(bridge.guestToHost(context.eval("js", "record.updated('foo', 2)")), Record.of(Slot.of("foo", 2)));
+      assertEquals(bridge.guestToHost(context.eval("js", "record.updated('foo', eight)")), Record.of(Slot.of("foo", 8)));
+    }
+  }
+
+  @Test
+  public void testSlot() {
+    try (Context context = Context.create()) {
+      final JavaHostRuntime runtime = new JavaHostRuntime();
+      final VmBridge bridge = new VmBridge(runtime, "js");
+      runtime.addHostLibrary(SwimStructure.LIBRARY);
+
+      final org.graalvm.polyglot.Value bindings = context.getBindings("js");
+      bindings.putMember("slot", bridge.hostToGuest(Slot.of("foo", "bar")));
+
+      assertEquals(bridge.guestToHost(context.eval("js", "slot")), Slot.of("foo", "bar"));
+      assertEquals(context.eval("js", "slot.isDefined()").asBoolean(), true);
+      assertEquals(context.eval("js", "slot.isDistinct()").asBoolean(), true);
+      assertEquals(context.eval("js", "slot.key.stringValue()").asString(), "foo");
+      assertEquals(context.eval("js", "slot.toValue().stringValue()").asString(), "bar");
     }
   }
 }

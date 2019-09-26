@@ -15,12 +15,16 @@
 package swim.dynamic.structure;
 
 import swim.dynamic.Bridge;
+import swim.dynamic.HostField;
 import swim.dynamic.HostMethod;
 import swim.dynamic.HostObjectType;
 import swim.dynamic.HostStaticMethod;
 import swim.dynamic.JavaHostClassType;
 import swim.dynamic.java.lang.HostObject;
 import swim.structure.Item;
+import swim.structure.Num;
+import swim.structure.Text;
+import swim.structure.Value;
 
 public final class HostItem {
   private HostItem() {
@@ -36,6 +40,9 @@ public final class HostItem {
     type.addMember(new HostItemIsDefined());
     type.addMember(new HostItemIsDistinct());
     type.addMember(new HostItemIsConstant());
+    type.addMember(new HostItemKey());
+    type.addMember(new HostItemToValue());
+    type.addMember(new HostItemUpdated());
     type.addMember(new HostItemStringValue());
     type.addMember(new HostItemNumberValue());
     type.addMember(new HostItemBooleanValue());
@@ -77,6 +84,54 @@ final class HostItemIsConstant implements HostMethod<Item> {
   @Override
   public Object invoke(Bridge bridge, Item item, Object... arguments) {
     return item.isConstant();
+  }
+}
+
+final class HostItemKey implements HostField<Item> {
+  @Override
+  public String key() {
+    return "key";
+  }
+
+  @Override
+  public Object get(Bridge bridge, Item item) {
+    return item.key();
+  }
+}
+
+final class HostItemToValue implements HostMethod<Item> {
+  @Override
+  public String key() {
+    return "toValue";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Item item, Object... arguments) {
+    return item.toValue();
+  }
+}
+
+final class HostItemUpdated implements HostMethod<Item> {
+  @Override
+  public String key() {
+    return "updated";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Item item, Object... arguments) {
+    Object key = arguments[0];
+    Object value = arguments[1];
+    if (key instanceof String) {
+      key = Text.from((String) key);
+    } else if (key instanceof Number) {
+      key = Num.from((Number) key);
+    }
+    if (value instanceof String) {
+      value = Text.from((String) value);
+    } else if (value instanceof Number) {
+      value = Num.from((Number) value);
+    }
+    return item.updated((Value) key, (Value) value);
   }
 }
 
