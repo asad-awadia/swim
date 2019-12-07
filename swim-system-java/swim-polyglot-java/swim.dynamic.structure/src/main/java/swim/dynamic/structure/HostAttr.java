@@ -86,19 +86,19 @@ final class HostAttrOf implements HostStaticMethod {
       if (value == null) {
         throw new NullPointerException("value");
       }
-      else if (key instanceof String) {
-        key = Text.from((String) key);
+      else {
+        if (key instanceof String) {
+          key = Text.from((String) key);
+        }
+        if (value instanceof String) {
+          value = Text.from((String) value);
+        } else if (value instanceof Number) {
+          value = Num.from((Number) value);
+        } else if (value instanceof Boolean) {
+          value = Bool.from((Boolean) value);
+        }
+        return Attr.of((Text) key, (Value) value);
       }
-      else if (value instanceof String) {
-        value = Text.from((String) value);
-      }
-      else if (value instanceof Number) {
-        value = Num.from((Number) value);
-      }
-      else if (value instanceof Boolean) {
-        value = Bool.from((Boolean) value);
-      }
-      return Attr.of((Text) key, (Value) value);
     }
   }
 }
