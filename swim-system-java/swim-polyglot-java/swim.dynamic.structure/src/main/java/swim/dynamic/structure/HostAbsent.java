@@ -14,7 +14,9 @@
 
 package swim.dynamic.structure;
 
+import swim.dynamic.Bridge;
 import swim.dynamic.HostObjectType;
+import swim.dynamic.HostStaticMethod;
 import swim.dynamic.JavaHostClassType;
 import swim.structure.Absent;
 
@@ -29,5 +31,18 @@ public final class HostAbsent {
     final JavaHostClassType<Absent> type = new JavaHostClassType<>(Absent.class);
     TYPE = type;
     type.extendType(HostValue.TYPE);
+    type.addStaticMember(new HostAbsentAbsent());
+  }
+}
+
+final class HostAbsentAbsent implements HostStaticMethod {
+  @Override
+  public String key() {
+    return "absent";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Absent.absent();
   }
 }

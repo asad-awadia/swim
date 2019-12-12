@@ -14,9 +14,9 @@
 
 package swim.dynamic.structure;
 
-import swim.dynamic.HostObjectType;
-import swim.dynamic.JavaHostClassType;
+import swim.dynamic.*;
 import swim.structure.Bool;
+import swim.structure.Value;
 
 public final class HostBool {
   private HostBool() {
@@ -29,5 +29,62 @@ public final class HostBool {
     final JavaHostClassType<Bool> type = new JavaHostClassType<>(Bool.class);
     TYPE = type;
     type.extendType(HostValue.TYPE);
+    type.addMember(new HostBoolConditional());
+    type.addMember(new HostBoolOr());
+    type.addMember(new HostBoolAnd());
+    type.addMember(new HostBoolCompareTo());
+    type.addStaticMember(new HostBoolFrom());
+  }
+}
+
+final class HostBoolConditional implements HostMethod<Bool> {
+  @Override
+  public String key() {
+    return "conditional";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Bool bool, Object... arguments) {
+    return bool.conditional((Value) arguments[0], (Value) arguments[1]);
+  }
+}
+
+final class HostBoolOr implements HostMethod<Bool> {
+  @Override
+  public String key() { return  "or"; }
+
+  @Override
+  public Object invoke(Bridge bridge, Bool bool, Object... arguments) {
+    return bool.or((Value) arguments[0]);
+  }
+}
+
+final class HostBoolAnd implements HostMethod<Bool> {
+  @Override
+  public String key() {return "and"; }
+
+  @Override
+  public Object invoke(Bridge bridge, Bool bool, Object... arguments) {
+    return bool.and((Value) arguments[0]);
+  }
+}
+
+final class HostBoolCompareTo implements HostMethod<Bool> {
+  @Override
+  public String key() {return "compareTo"; }
+
+  @Override
+  public Object invoke(Bridge bridge, Bool bool, Object... arguments) {
+    return bool.compareTo((Bool) arguments[0]);
+  }
+}
+
+final class HostBoolFrom implements HostStaticMethod {
+  @Override
+  public String key() { return "from"; }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Bool.from((boolean) arguments[0]);
   }
 }

@@ -14,8 +14,9 @@
 
 package swim.dynamic.structure;
 
-import swim.dynamic.HostObjectType;
-import swim.dynamic.JavaHostClassType;
+import swim.codec.OutputSettings;
+import swim.dynamic.*;
+import swim.dynamic.HostField;
 import swim.structure.Text;
 
 public final class HostText {
@@ -29,5 +30,73 @@ public final class HostText {
     final JavaHostClassType<Text> type = new JavaHostClassType<>(Text.class);
     TYPE = type;
     type.extendType(HostValue.TYPE);
+    type.addMember(new HostTextSize());
+    type.addStaticMember(new HostTextOutput());
+    type.addStaticMember(new HostTextEmpty());
+    type.addStaticMember(new HostTextFrom());
+    type.addStaticMember(new HostTextFromObject());
+  }
+}
+
+final class HostTextSize implements HostField<Text> {
+  @Override
+  public String key() {
+    return "size";
+  }
+
+  @Override
+  public Object get(Bridge bridge, Text text) {
+    return text.size();
+  }
+}
+
+final class HostTextOutput implements HostStaticMethod {
+  @Override
+  public String key() {
+    return "output";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    if (arguments.length != 0) {
+      return Text.output((OutputSettings) arguments[0]);
+    }
+    return Text.output();
+  }
+}
+
+final class HostTextEmpty implements HostStaticMethod {
+  @Override
+  public String key() {
+    return "empty";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Text.empty();
+  }
+}
+
+final class HostTextFrom implements HostStaticMethod {
+  @Override
+  public String key() {
+    return "from";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Text.from((String) arguments[0]);
+  }
+}
+
+final class HostTextFromObject implements HostStaticMethod {
+  @Override
+  public String key() {
+    return "fromObject";
+  }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Text.fromObject(arguments[0]);
   }
 }

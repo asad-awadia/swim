@@ -14,7 +14,9 @@
 
 package swim.dynamic.structure;
 
+import swim.dynamic.Bridge;
 import swim.dynamic.HostObjectType;
+import swim.dynamic.HostStaticMethod;
 import swim.dynamic.JavaHostClassType;
 import swim.structure.Extant;
 
@@ -29,5 +31,16 @@ public final class HostExtant {
     final JavaHostClassType<Extant> type = new JavaHostClassType<>(Extant.class);
     TYPE = type;
     type.extendType(HostValue.TYPE);
+    type.addStaticMember(new HostExtantExtant());
+  }
+}
+
+final class HostExtantExtant implements HostStaticMethod {
+  @Override
+  public String key() { return "extant"; }
+
+  @Override
+  public Object invoke(Bridge bridge, Object... arguments) {
+    return Extant.extant();
   }
 }
