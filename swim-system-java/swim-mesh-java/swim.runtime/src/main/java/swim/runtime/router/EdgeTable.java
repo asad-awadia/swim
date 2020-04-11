@@ -401,7 +401,7 @@ public class EdgeTable extends AbstractTierBinding implements EdgeBinding {
       } else {
         newMeshes = oldMeshes.updated(meshUri, meshBinding);
       }
-    } while (oldMeshes != newMeshes && !MESHES.compareAndSet(this, oldMeshes, newMeshes));
+    } while (!MESHES.compareAndSet(this, oldMeshes, newMeshes));
     if (oldMeshes != newMeshes) {
       activate(meshBinding);
       didOpenMesh(meshBinding);
@@ -430,7 +430,7 @@ public class EdgeTable extends AbstractTierBinding implements EdgeBinding {
         }
         newMeshes = oldMeshes.updated(meshUri, meshBinding);
       }
-    } while (oldMeshes != newMeshes && !MESHES.compareAndSet(this, oldMeshes, newMeshes));
+    } while (!MESHES.compareAndSet(this, oldMeshes, newMeshes));
     if (meshBinding != null) {
       activate(meshBinding);
       didOpenMesh(meshBinding);
@@ -453,7 +453,7 @@ public class EdgeTable extends AbstractTierBinding implements EdgeBinding {
         newMeshes = oldMeshes;
         break;
       }
-    } while (oldMeshes != newMeshes && !MESHES.compareAndSet(this, oldMeshes, newMeshes));
+    } while (!MESHES.compareAndSet(this, oldMeshes, newMeshes));
     if (meshBinding != null) {
       if (this.network == meshBinding) {
         this.network = null;

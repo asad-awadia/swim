@@ -124,7 +124,7 @@ public class JoinMapLaneModel extends WarpLaneModel<JoinMapLaneView<?, ?, ?>, Jo
     do {
       oldDownlinks = this.downlinks;
       newDownlinks = oldDownlinks.updated(key, downlink);
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
     if (oldDownlinks != newDownlinks) {
       final JoinMapLaneDownlink<?, ?> oldDownlink = oldDownlinks.get(key);
       if (oldDownlink != null) {
@@ -141,7 +141,7 @@ public class JoinMapLaneModel extends WarpLaneModel<JoinMapLaneView<?, ?, ?>, Jo
     final HashTrieMap<Value, JoinMapLaneDownlink<?, ?>> newDownlinks = HashTrieMap.empty();
     do {
       oldDownlinks = this.downlinks;
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
     if (!oldDownlinks.isEmpty()) {
       for (JoinMapLaneDownlink<?, ?> downlink : oldDownlinks.values()) {
         try {
@@ -158,7 +158,7 @@ public class JoinMapLaneModel extends WarpLaneModel<JoinMapLaneView<?, ?, ?>, Jo
     do {
       oldDownlinks = this.downlinks;
       newDownlinks = oldDownlinks.removed(key);
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
     if (oldDownlinks != newDownlinks) {
       final JoinMapLaneDownlink<?, ?> downlink = oldDownlinks.get(key);
       try {

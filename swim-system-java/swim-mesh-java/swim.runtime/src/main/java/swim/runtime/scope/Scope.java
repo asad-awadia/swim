@@ -90,7 +90,7 @@ public abstract class Scope implements CellContext {
     do {
       oldLinks = this.links;
       newLinks = oldLinks.added(link);
-    } while (oldLinks != newLinks && !LINKS.compareAndSet(this, oldLinks, newLinks));
+    } while (!LINKS.compareAndSet(this, oldLinks, newLinks));
     return link;
   }
 
@@ -103,7 +103,7 @@ public abstract class Scope implements CellContext {
     do {
       oldLinks = this.links;
       newLinks = oldLinks.added(link);
-    } while (oldLinks != newLinks && !LINKS.compareAndSet(this, oldLinks, newLinks));
+    } while (!LINKS.compareAndSet(this, oldLinks, newLinks));
   }
 
   @Override
@@ -113,7 +113,7 @@ public abstract class Scope implements CellContext {
     do {
       oldLinks = this.links;
       newLinks = oldLinks.removed(link);
-    } while (oldLinks != newLinks && !LINKS.compareAndSet(this, oldLinks, newLinks));
+    } while (!LINKS.compareAndSet(this, oldLinks, newLinks));
   }
 
   @Override
@@ -166,7 +166,7 @@ public abstract class Scope implements CellContext {
     final HashTrieSet<LinkBinding> newLinks = HashTrieSet.empty();
     do {
       oldLinks = this.links;
-    } while (oldLinks != newLinks && !LINKS.compareAndSet(this, oldLinks, newLinks));
+    } while (!LINKS.compareAndSet(this, oldLinks, newLinks));
     final Iterator<LinkBinding> linksIterator = oldLinks.iterator();
     while (linksIterator.hasNext()) {
       linksIterator.next().closeDown();

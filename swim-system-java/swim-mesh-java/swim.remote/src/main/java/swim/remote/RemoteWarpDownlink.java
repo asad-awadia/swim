@@ -239,7 +239,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
       } else {
         newStatus = oldStatus | FEEDING_DOWN;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if ((oldStatus & PULLING_DOWN) == 0) {
       final WarpSocketContext warpSocketContext = this.host.warpSocketContext;
       if (warpSocketContext != null) {
@@ -263,7 +263,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
       do {
         oldStatus = this.status;
         newStatus = oldStatus & ~PULLING_DOWN;
-      } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+      } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
       if (oldStatus != newStatus) {
         final Envelope remoteEnvelope = ((Envelope) message).nodeUri(this.remoteNodeUri);
         final PullContext<? super Envelope> pullContext = this.pullContext;
@@ -284,7 +284,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~PULLING_DOWN;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       final PullContext<? super Envelope> pullContext = this.pullContext;
       if (pullContext != null) {
@@ -304,7 +304,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
       if (envelope instanceof SyncRequest) {
         newStatus |= SYNC;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if ((oldStatus & FEEDING_UP) != (newStatus & FEEDING_UP)) {
       this.linkContext.feedUp();
     }
@@ -318,7 +318,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~FEEDING_UP;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (envelope != null) {
       this.linkContext.pushUp(new Push<Envelope>(Uri.empty(), Uri.empty(), this.nodeUri, this.laneUri,
           this.prio, this.host.remoteIdentity(), envelope, null));
@@ -336,7 +336,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
       } else {
         newStatus = oldStatus;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       this.linkContext.feedUp();
     }
@@ -355,7 +355,7 @@ class RemoteWarpDownlink implements WarpBinding, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~FEEDING_UP;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
 
     this.host.hostContext.openDownlink(this);
     this.linkContext.didOpenDown();

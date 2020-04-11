@@ -180,7 +180,7 @@ final class ValueDownlinkRelaySet extends DownlinkRelay<ValueDownlinkModel, Valu
       if (this.model.isStateful()) {
         do {
           this.oldValue = this.model.state;
-        } while (this.oldValue != this.newValue && !ValueDownlinkModel.STATE.compareAndSet(this.model, this.oldValue, this.newValue));
+        } while (!ValueDownlinkModel.STATE.compareAndSet(this.model, this.oldValue, this.newValue));
       }
       this.model.didSet(this.newValue, this.oldValue);
     }

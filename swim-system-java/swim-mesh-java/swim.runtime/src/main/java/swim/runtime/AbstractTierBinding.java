@@ -104,7 +104,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == OPENING_STATE) {
         willOpen();
@@ -139,7 +139,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == LOADING_STATE) {
         willLoad();
@@ -179,7 +179,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == STARTING_STATE) {
         willStart();
@@ -218,7 +218,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == STOPPING_STATE) {
         willStop();
@@ -253,7 +253,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == UNLOADING_STATE) {
         willUnload();
@@ -293,7 +293,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
         newStatus = oldStatus;
         break;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldState != newState) {
       if (newState == CLOSING_STATE) {
         willClose();
@@ -345,7 +345,7 @@ public abstract class AbstractTierBinding extends AbstractSwimRef implements Tie
             break loop;
         }
         newStatus = oldStatus & ~STATE_MASK | newState & STATE_MASK;
-      } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+      } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
 
       if (oldState != newState) {
         switch (oldState) {

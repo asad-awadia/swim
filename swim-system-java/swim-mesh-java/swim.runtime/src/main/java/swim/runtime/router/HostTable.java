@@ -312,7 +312,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
     do {
       oldFlags = this.flags;
       newFlags = oldFlags | PRIMARY;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -327,7 +327,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
     do {
       oldFlags = this.flags;
       newFlags = oldFlags | REPLICA;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -347,7 +347,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
     do {
       oldFlags = this.flags;
       newFlags = oldFlags & ~SLAVE | MASTER;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -357,7 +357,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
     do {
       oldFlags = this.flags;
       newFlags = oldFlags & ~MASTER | SLAVE;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
     if (oldFlags != newFlags) {
       closeNodes();
     }
@@ -465,7 +465,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
         newNodes = oldNodes.updated(nodeUri, nodeBinding);
       }
     } while (nodeBinding == null
-        || (oldNodes != newNodes && !NODES.compareAndSet(this, oldNodes, newNodes)));
+        || (!NODES.compareAndSet(this, oldNodes, newNodes)));
 
     if (oldNodes != newNodes) {
       activate(nodeBinding);
@@ -497,7 +497,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
         }
         newNodes = oldNodes.updated(nodeUri, nodeBinding);
       }
-    } while (oldNodes != newNodes && !NODES.compareAndSet(this, oldNodes, newNodes));
+    } while (!NODES.compareAndSet(this, oldNodes, newNodes));
     if (nodeBinding != null) {
       activate(nodeBinding);
       didOpenNode(nodeBinding);
@@ -520,7 +520,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
         newNodes = oldNodes;
         break;
       }
-    } while (oldNodes != newNodes && !NODES.compareAndSet(this, oldNodes, newNodes));
+    } while (!NODES.compareAndSet(this, oldNodes, newNodes));
     if (nodeBinding != null) {
       nodeBinding.didClose();
       didCloseNode(nodeBinding);
@@ -532,7 +532,7 @@ public class HostTable extends AbstractTierBinding implements HostBinding {
     final UriMapper<NodeBinding> newNodes = UriMapper.empty();
     do {
       oldNodes = this.nodes;
-    } while (oldNodes != newNodes && !NODES.compareAndSet(this, oldNodes, newNodes));
+    } while (!NODES.compareAndSet(this, oldNodes, newNodes));
     if (!oldNodes.isEmpty()) {
       final DemandMapLane<Uri, NodeInfo> metaNodes = this.metaNodes;
       for (NodeBinding nodeBinding : oldNodes.values()) {

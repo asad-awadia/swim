@@ -104,7 +104,7 @@ public class ActorAuthenticator implements AuthenticatorContext {
     do {
       oldStatus = this.status;
       newStatus = oldStatus | STARTED;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if ((oldStatus & STARTED) == 0) {
       willStart();
       didStart();
@@ -117,7 +117,7 @@ public class ActorAuthenticator implements AuthenticatorContext {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~STARTED;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if ((oldStatus & STARTED) != 0) {
       willStop();
       didStop();

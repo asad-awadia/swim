@@ -266,7 +266,7 @@ public class AgentNode extends AbstractTierBinding implements NodeBinding, CellC
         }
         newLanes = oldLanes.updated(laneUri, laneBinding);
       }
-    } while (oldLanes != newLanes && !LANES.compareAndSet(this, oldLanes, newLanes));
+    } while (!LANES.compareAndSet(this, oldLanes, newLanes));
     laneBinding.openLaneView(laneView);
     if (oldLanes != newLanes) {
       activate(laneBinding);
@@ -312,7 +312,7 @@ public class AgentNode extends AbstractTierBinding implements NodeBinding, CellC
       } else {
         newLanes = oldLanes.updated(laneUri, laneBinding);
       }
-    } while (oldLanes != newLanes && !LANES.compareAndSet(this, oldLanes, newLanes));
+    } while (!LANES.compareAndSet(this, oldLanes, newLanes));
     if (laneBinding != null) {
       activate(laneBinding);
       didOpenLane(laneBinding);
@@ -342,7 +342,7 @@ public class AgentNode extends AbstractTierBinding implements NodeBinding, CellC
         }
         newLanes = oldLanes.updated(laneUri, laneBinding);
       }
-    } while (oldLanes != newLanes && !LANES.compareAndSet(this, oldLanes, newLanes));
+    } while (!LANES.compareAndSet(this, oldLanes, newLanes));
     if (laneBinding != null) {
       activate(laneBinding);
       didOpenLane(laneBinding);
@@ -366,7 +366,7 @@ public class AgentNode extends AbstractTierBinding implements NodeBinding, CellC
         newLanes = oldLanes;
         break;
       }
-    } while (oldLanes != newLanes && !LANES.compareAndSet(this, oldLanes, newLanes));
+    } while (!LANES.compareAndSet(this, oldLanes, newLanes));
     if (laneBinding != null) {
       laneBinding.didClose();
       didCloseLane(laneBinding);

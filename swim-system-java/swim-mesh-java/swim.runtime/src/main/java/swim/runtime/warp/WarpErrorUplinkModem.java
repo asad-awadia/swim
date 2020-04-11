@@ -145,7 +145,7 @@ public class WarpErrorUplinkModem implements WarpContext {
     do {
       oldStatus = this.status;
       newStatus = oldStatus | FEEDING_DOWN;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       this.linkBinding.feedDown();
     }
@@ -158,7 +158,7 @@ public class WarpErrorUplinkModem implements WarpContext {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~FEEDING_DOWN;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       final UnlinkedResponse response = getUnlinkedResponse();
       this.linkBinding.pushDown(new Push<UnlinkedResponse>(Uri.empty(), this.linkBinding.hostUri(), this.linkBinding.nodeUri(),

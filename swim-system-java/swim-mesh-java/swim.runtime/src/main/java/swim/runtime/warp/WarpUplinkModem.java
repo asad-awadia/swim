@@ -643,7 +643,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
         }
       } else {
         newStatus = oldStatus | CUED_DOWN;
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           break;
         }
       }
@@ -692,7 +692,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
               oldStatus = this.status;
               if ((oldStatus & CUED_DOWN) == 0 && downQueueIsEmpty()) {
                 newStatus = oldStatus & ~FEEDING_DOWN;
-                if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+                if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
                   break;
                 }
               } else {
@@ -709,7 +709,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
           do {
             oldStatus = this.status;
             newStatus = oldStatus & ~CUED_DOWN;
-            if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+            if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
               break;
             }
           } while (true);
@@ -728,7 +728,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
               }
             } else {
               newStatus = oldStatus | FEEDING_DOWN;
-              if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+              if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
                 this.linkBinding.feedDown();
                 break;
               }
@@ -758,7 +758,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
             oldStatus = this.status;
             if ((oldStatus & CUED_DOWN) == 0 && downQueueIsEmpty()) {
               newStatus = oldStatus & ~FEEDING_DOWN;
-              if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+              if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
                 break;
               }
             } else {
@@ -811,7 +811,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
         }
       } else {
         newStatus = oldStatus & ~PULLING_UP;
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           break;
         }
       }
@@ -831,7 +831,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
         }
       } else {
         newStatus = oldStatus | FEEDING_UP;
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           break;
         }
       }
@@ -1007,7 +1007,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
       } else {
         newStatus = oldStatus | (FEEDING_DOWN | LINKING | LINKED);
       }
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         if ((oldStatus & FEEDING_DOWN) == 0) {
           this.linkBinding.feedDown();
         }
@@ -1040,7 +1040,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
           newStatus = oldStatus | (FEEDING_DOWN | SYNCING);
         }
       }
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         if ((oldStatus & FEEDING_DOWN) == 0) {
           this.linkBinding.feedDown();
         }
@@ -1066,7 +1066,7 @@ public abstract class WarpUplinkModem extends AbstractUplinkContext implements W
       } else {
         newStatus = oldStatus & ~(SYNCING | LINKING | LINKED) | (FEEDING_DOWN | UNLINKING);
       }
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         if ((oldStatus & FEEDING_DOWN) == 0) {
           this.linkBinding.feedDown();
         }

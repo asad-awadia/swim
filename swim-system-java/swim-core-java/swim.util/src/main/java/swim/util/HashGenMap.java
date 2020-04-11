@@ -140,7 +140,7 @@ public class HashGenMap<K, V> {
           cacheVal = null;
         }
       }
-    } while (bucket != newBucket && !this.buckets.compareAndSet(index, bucket, newBucket));
+    } while (!this.buckets.compareAndSet(index, bucket, newBucket));
     return cacheVal;
   }
 
@@ -216,7 +216,7 @@ public class HashGenMap<K, V> {
           cacheVal = value;
         }
       }
-    } while (bucket != newBucket && !this.buckets.compareAndSet(index, bucket, newBucket));
+    } while (!this.buckets.compareAndSet(index, bucket, newBucket));
     if (evictKey != null) {
       EVICTS.incrementAndGet(this);
       evict(evictKey, evictVal);
@@ -271,7 +271,7 @@ public class HashGenMap<K, V> {
           newBucket = bucket;
         }
       }
-    } while (bucket != newBucket && !this.buckets.compareAndSet(index, bucket, newBucket));
+    } while (!this.buckets.compareAndSet(index, bucket, newBucket));
     return cacheVal;
   }
 

@@ -405,7 +405,7 @@ public class PartTable extends AbstractTierBinding implements PartBinding {
       } else {
         newHosts = oldHosts.updated(hostUri, hostBinding);
       }
-    } while (oldHosts != newHosts && !HOSTS.compareAndSet(this, oldHosts, newHosts));
+    } while (!HOSTS.compareAndSet(this, oldHosts, newHosts));
     if (oldHosts != newHosts) {
       activate(hostBinding);
       didOpenHost(hostBinding);
@@ -434,7 +434,7 @@ public class PartTable extends AbstractTierBinding implements PartBinding {
         }
         newHosts = oldHosts.updated(hostUri, hostBinding);
       }
-    } while (oldHosts != newHosts && !HOSTS.compareAndSet(this, oldHosts, newHosts));
+    } while (!HOSTS.compareAndSet(this, oldHosts, newHosts));
     if (hostBinding != null) {
       activate(hostBinding);
       didOpenHost(hostBinding);
@@ -457,7 +457,7 @@ public class PartTable extends AbstractTierBinding implements PartBinding {
         newHosts = oldHosts;
         break;
       }
-    } while (oldHosts != newHosts && !HOSTS.compareAndSet(this, oldHosts, newHosts));
+    } while (!HOSTS.compareAndSet(this, oldHosts, newHosts));
     if (hostBinding != null) {
       if (this.master == hostBinding) {
         this.master = null;
@@ -575,7 +575,7 @@ public class PartTable extends AbstractTierBinding implements PartBinding {
     do {
       oldUplinks = this.uplinks;
       newUplinks = oldUplinks.updated(uplink.linkKey(), uplink);
-    } while (oldUplinks != newUplinks && !UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
+    } while (!UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
   }
 
   void didCloseUplink(LinkBinding uplink) {
@@ -584,7 +584,7 @@ public class PartTable extends AbstractTierBinding implements PartBinding {
     do {
       oldUplinks = this.uplinks;
       newUplinks = oldUplinks.removed(uplink.linkKey());
-    } while (oldUplinks != newUplinks && !UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
+    } while (!UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
   }
 
   @Override

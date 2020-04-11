@@ -316,7 +316,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     do {
       oldFlags = this.flags;
       newFlags = oldFlags | PRIMARY;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -331,7 +331,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     do {
       oldFlags = this.flags;
       newFlags = oldFlags | REPLICA;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -351,7 +351,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     do {
       oldFlags = this.flags;
       newFlags = oldFlags & ~SLAVE | MASTER;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   @Override
@@ -361,7 +361,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     do {
       oldFlags = this.flags;
       newFlags = oldFlags & ~MASTER | SLAVE;
-    } while (oldFlags != newFlags && !FLAGS.compareAndSet(this, oldFlags, newFlags));
+    } while (!FLAGS.compareAndSet(this, oldFlags, newFlags));
   }
 
   RemoteWarpDownlink createWarpDownlink(Uri remoteNodeUri, Uri nodeUri, Uri laneUri, float prio, float rate, Value body) {
@@ -477,7 +477,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
         newUplinks = oldUplinks;
         break;
       }
-    } while (oldUplinks != newUplinks && !UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
+    } while (!UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
 
     if (oldUplinks != newUplinks) {
       uplink.didCloseUp();
@@ -729,7 +729,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
         nodeDownlinks = nodeDownlinks.updated(laneUri, downlink);
         newDownlinks = oldDownlinks.updated(nodeUri, nodeDownlinks);
       }
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
 
     if (oldDownlinks != newDownlinks) {
       downlink.openDown();
@@ -834,7 +834,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
         downlink = null;
         break;
       }
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
 
     if (downlink != null) {
       final UnlinkRequest resolvedRequest = request.nodeUri(nodeUri);
@@ -870,7 +870,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
         laneUplinks = null;
         break;
       }
-    } while (oldUplinks != newUplinks && !UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
+    } while (!UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
 
     if (laneUplinks != null) {
       final UnlinkedResponse resolvedResponse = response.nodeUri(nodeUri);
@@ -1062,7 +1062,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     final HashTrieMap<Uri, HashTrieMap<Uri, RemoteWarpDownlink>> newDownlinks = HashTrieMap.empty();
     do {
       oldDownlinks = this.downlinks;
-    } while (oldDownlinks != newDownlinks && !DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
+    } while (!DOWNLINKS.compareAndSet(this, oldDownlinks, newDownlinks));
 
     final Iterator<HashTrieMap<Uri, RemoteWarpDownlink>> nodeDownlinksIterator = oldDownlinks.valueIterator();
     while (nodeDownlinksIterator.hasNext()) {
@@ -1080,7 +1080,7 @@ public class RemoteHost extends AbstractTierBinding implements HostBinding, Warp
     final HashTrieMap<Uri, HashTrieMap<Uri, HashTrieSet<RemoteWarpUplink>>> newUplinks = HashTrieMap.empty();
     do {
       oldUplinks = this.uplinks;
-    } while (oldUplinks != newUplinks && !UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
+    } while (!UPLINKS.compareAndSet(this, oldUplinks, newUplinks));
 
     final Iterator<HashTrieMap<Uri, HashTrieSet<RemoteWarpUplink>>> nodeUplinksIterator = this.uplinks.valueIterator();
     while (nodeUplinksIterator.hasNext()) {

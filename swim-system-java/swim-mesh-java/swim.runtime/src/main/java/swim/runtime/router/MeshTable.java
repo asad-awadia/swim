@@ -451,7 +451,7 @@ public class MeshTable extends AbstractTierBinding implements MeshBinding {
       } else {
         newParts = oldParts.appended(partBinding);
       }
-    } while (oldParts != newParts && !PARTS.compareAndSet(this, oldParts, newParts));
+    } while (!PARTS.compareAndSet(this, oldParts, newParts));
     if (oldParts != newParts) {
       if (partKey instanceof Extant) {
         this.gateway = partBinding;
@@ -497,7 +497,7 @@ public class MeshTable extends AbstractTierBinding implements MeshBinding {
       } else {
         newParts = oldParts.appended(partBinding);
       }
-    } while (oldParts != newParts && !PARTS.compareAndSet(this, oldParts, newParts));
+    } while (!PARTS.compareAndSet(this, oldParts, newParts));
     if (oldParts != newParts) {
       this.gateway = partBinding;
       activate(partBinding);
@@ -527,7 +527,7 @@ public class MeshTable extends AbstractTierBinding implements MeshBinding {
         partBinding = partBinding.partWrapper();
       }
       newParts = oldParts.appended(partBinding);
-    } while (oldParts != newParts && !PARTS.compareAndSet(this, oldParts, newParts));
+    } while (!PARTS.compareAndSet(this, oldParts, newParts));
     if (partBinding != null) {
       activate(partBinding);
       didOpenPart(partBinding);
@@ -551,7 +551,7 @@ public class MeshTable extends AbstractTierBinding implements MeshBinding {
           break;
         }
       }
-    } while (oldParts != newParts && !PARTS.compareAndSet(this, oldParts, newParts));
+    } while (!PARTS.compareAndSet(this, oldParts, newParts));
     if (partBinding != null) {
       if (this.gateway == partBinding) {
         this.gateway = null;

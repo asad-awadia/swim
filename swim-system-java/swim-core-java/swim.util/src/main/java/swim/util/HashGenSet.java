@@ -148,7 +148,7 @@ public class HashGenSet<V> {
           cacheVal = value;
         }
       }
-    } while (bucket != newBucket && !buckets.compareAndSet(index, bucket, newBucket));
+    } while (!buckets.compareAndSet(index, bucket, newBucket));
     if (evictVal != null) {
       EVICTS.incrementAndGet(this);
       evict(evictVal);
@@ -203,7 +203,7 @@ public class HashGenSet<V> {
           removed = false;
         }
       }
-    } while (bucket != newBucket && !buckets.compareAndSet(index, bucket, newBucket));
+    } while (!buckets.compareAndSet(index, bucket, newBucket));
     return removed;
   }
 

@@ -100,7 +100,7 @@ public abstract class MapDownlinkModem<View extends WarpDownlinkView> extends Wa
       oldKeyQueue = this.keyQueue;
       key = oldKeyQueue.next(this.lastKey);
       newKeyQueue = oldKeyQueue.removed(key);
-    } while (oldKeyQueue != newKeyQueue && !KEY_QUEUE.compareAndSet(this, oldKeyQueue, newKeyQueue));
+    } while (!KEY_QUEUE.compareAndSet(this, oldKeyQueue, newKeyQueue));
     if (key != null) {
       this.lastKey = key;
       final Uri hostUri = hostUri();

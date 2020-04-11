@@ -296,14 +296,14 @@ public class ActorSpace extends AbstractTierBinding implements EdgeContext, Plan
     do {
       oldAgentRoutes = this.agentRoutes;
       newAgentRoutes = oldAgentRoutes.updated(routeName, agentRoute);
-    } while (oldAgentRoutes != newAgentRoutes && !AGENT_ROUTES.compareAndSet(this, oldAgentRoutes, newAgentRoutes));
+    } while (!AGENT_ROUTES.compareAndSet(this, oldAgentRoutes, newAgentRoutes));
 
     UriMapper<AgentFactory<?>> oldAgentFactories;
     UriMapper<AgentFactory<?>> newAgentFactories;
     do {
       oldAgentFactories = this.agentFactories;
       newAgentFactories = oldAgentFactories.updated(pattern, agentRoute);
-    } while (oldAgentFactories != newAgentFactories && !AGENT_FACTORIES.compareAndSet(this, oldAgentFactories, newAgentFactories));
+    } while (!AGENT_FACTORIES.compareAndSet(this, oldAgentFactories, newAgentFactories));
   }
 
   @Override
@@ -318,7 +318,7 @@ public class ActorSpace extends AbstractTierBinding implements EdgeContext, Plan
     do {
       oldAgentRoutes = this.agentRoutes;
       newAgentRoutes = oldAgentRoutes.removed(routeName);
-    } while (oldAgentRoutes != newAgentRoutes && !AGENT_ROUTES.compareAndSet(this, oldAgentRoutes, newAgentRoutes));
+    } while (!AGENT_ROUTES.compareAndSet(this, oldAgentRoutes, newAgentRoutes));
 
     final AgentRoute<?> agentRoute = oldAgentRoutes.get(routeName);
     if (agentRoute != null) {
@@ -327,7 +327,7 @@ public class ActorSpace extends AbstractTierBinding implements EdgeContext, Plan
       do {
         oldAgentFactories = this.agentFactories;
         newAgentFactories = oldAgentFactories.removed(agentRoute.pattern());
-      } while (oldAgentFactories != newAgentFactories && !AGENT_FACTORIES.compareAndSet(this, oldAgentFactories, newAgentFactories));
+      } while (!AGENT_FACTORIES.compareAndSet(this, oldAgentFactories, newAgentFactories));
     }
   }
 

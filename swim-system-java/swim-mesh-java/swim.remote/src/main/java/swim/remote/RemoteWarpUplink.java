@@ -170,7 +170,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus | FEEDING_DOWN;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       this.link.feedDown();
     }
@@ -184,7 +184,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~FEEDING_DOWN;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (push != null) {
       this.link.pushDown(push);
     }
@@ -201,7 +201,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
       } else {
         newStatus = oldStatus;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus) {
       this.link.feedDown();
     }
@@ -218,7 +218,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
       } else {
         newStatus = oldStatus | FEEDING_UP;
       }
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if ((oldStatus & PULLING_UP) == 0) {
       this.host.warpSocketContext.feed(this);
     }
@@ -239,7 +239,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
       do {
         oldStatus = this.status;
         newStatus = oldStatus & ~PULLING_UP;
-      } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+      } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
       if (oldStatus != newStatus && this.pullContext != null) {
         final Envelope remoteEnvelope = ((Envelope) message).nodeUri(this.remoteNodeUri);
         this.pullContext.push(remoteEnvelope);
@@ -258,7 +258,7 @@ class RemoteWarpUplink implements WarpContext, PullRequest<Envelope> {
     do {
       oldStatus = this.status;
       newStatus = oldStatus & ~PULLING_UP;
-    } while (oldStatus != newStatus && !STATUS.compareAndSet(this, oldStatus, newStatus));
+    } while (!STATUS.compareAndSet(this, oldStatus, newStatus));
     if (oldStatus != newStatus && this.pullContext != null) {
       this.pullContext.skip();
       this.pullContext = null;

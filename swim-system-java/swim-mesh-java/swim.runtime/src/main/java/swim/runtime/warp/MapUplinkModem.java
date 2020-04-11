@@ -93,14 +93,14 @@ public abstract class MapUplinkModem extends WarpUplinkModem {
       oldKeyQueue = this.keyQueue;
       key = oldKeyQueue.next(this.lastKey);
       newKeyQueue = oldKeyQueue.removed(key);
-    } while (oldKeyQueue != newKeyQueue && !KEY_QUEUE.compareAndSet(this, oldKeyQueue, newKeyQueue));
+    } while (!KEY_QUEUE.compareAndSet(this, oldKeyQueue, newKeyQueue));
     if (key != null) {
       this.lastKey = key;
       if (!newKeyQueue.isEmpty()) {
         do {
           final int oldStatus = this.status;
           final int newStatus = oldStatus | CUED_DOWN;
-          if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+          if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
             break;
           }
         } while (true);

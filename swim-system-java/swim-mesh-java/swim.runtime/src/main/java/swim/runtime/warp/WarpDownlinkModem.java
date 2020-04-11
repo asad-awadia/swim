@@ -175,7 +175,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
         }
       } else {
         newStatus = oldStatus & ~PULLING_DOWN;
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           break;
         }
       }
@@ -195,7 +195,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
         }
       } else {
         newStatus = oldStatus | FEEDING_DOWN;
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           break;
         }
       }
@@ -365,7 +365,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
         }
       } else {
         newStatus = oldStatus & ~(CUED_UP | FEEDING_UP);
-        if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+        if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
           Push<CommandMessage> push = nextUpQueue();
           if (push == null && (oldStatus & CUED_UP) != 0) {
             push = nextUpCue();
@@ -520,7 +520,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
     do {
       final int oldStatus = this.status;
       final int newStatus = oldStatus | OPENED;
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         break;
       }
     } while (true);
@@ -567,7 +567,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
     do {
       final int oldStatus = this.status;
       final int newStatus = oldStatus & ~LINKING;
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         break;
       }
     } while (true);
@@ -581,7 +581,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
     do {
       final int oldStatus = this.status;
       final int newStatus = oldStatus & ~SYNCING;
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         break;
       }
     } while (true);
@@ -595,7 +595,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
     do {
       final int oldStatus = this.status;
       final int newStatus = oldStatus & ~(PULLING_DOWN | UNLINKING | UNLINK | SYNCING | SYNC | LINKING | LINK | LINKED);
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         break;
       }
     } while (true);
@@ -618,7 +618,7 @@ public abstract class WarpDownlinkModem<View extends DownlinkView> extends Downl
     do {
       final int oldStatus = this.status;
       final int newStatus = oldStatus & ~(FEEDING_UP | UNLINKING | UNLINK | SYNCING | SYNC | LINKING | LINK | LINKED);
-      if (oldStatus == newStatus || STATUS.compareAndSet(this, oldStatus, newStatus)) {
+      if (STATUS.compareAndSet(this, oldStatus, newStatus)) {
         break;
       }
     } while (true);
